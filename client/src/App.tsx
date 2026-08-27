@@ -70,6 +70,17 @@ function App() {
     setActiveTool((current) => (current === tool ? null : tool));
   };
 
+  // Purely cosmetic ordering for the sidebar — doesn't touch assignments or map rendering.
+  const handleReorderCategories = (fromIndex: number, toIndex: number) => {
+    if (fromIndex === toIndex) return;
+    setCategories((prev) => {
+      const next = [...prev];
+      const [moved] = next.splice(fromIndex, 1);
+      next.splice(toIndex, 0, moved);
+      return next;
+    });
+  };
+
   // Clicking a state with the active category toggles that one category on/off for
   // it, so a state can end up in several categories at once. The eraser instead wipes
   // every category off the state in one click.
@@ -144,6 +155,7 @@ function App() {
           onRenameCategory={handleRenameCategory}
           onRecolorCategory={handleRecolorCategory}
           onDeleteCategory={handleDeleteCategory}
+          onReorderCategories={handleReorderCategories}
           assignedCount={assignedCount}
           onClearMap={handleClearMap}
           onSubmit={handleSubmit}

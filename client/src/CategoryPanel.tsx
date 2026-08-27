@@ -13,6 +13,7 @@ interface CategoryPanelProps {
   onRenameCategory: (id: string, name: string) => void;
   onRecolorCategory: (id: string, color: string) => void;
   onDeleteCategory: (id: string) => void;
+  onReorderCategories: (fromIndex: number, toIndex: number) => void;
   assignedCount: number;
   onClearMap: () => void;
   onSubmit: () => void;
@@ -31,6 +32,7 @@ export function CategoryPanel({
   onRenameCategory,
   onRecolorCategory,
   onDeleteCategory,
+  onReorderCategories,
   assignedCount,
   onClearMap,
   onSubmit,
@@ -41,6 +43,8 @@ export function CategoryPanel({
   const [newName, setNewName] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState("");
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
 
   const nextColor = CATEGORY_COLOR_PALETTE[categories.length % CATEGORY_COLOR_PALETTE.length];
 
@@ -62,6 +66,16 @@ export function CategoryPanel({
       onRenameCategory(editingId, editingName.trim());
     }
     setEditingId(null);
+  };
+
+  const handleDrop = (targetId: string) => {
+    if (draggingId && draggingId !== targetId) {
+      const fromIndex = categories.findIndex((c) => c.id === draggingId);
+      const toIndex = categories.findIndex((c) => c.id === targetId);
+      if (fromIndex !== -1 && toIndex !== -1) onReorderCategories(fromIndex, toIndex);
+    }
+    setDraggingId(null);
+    setDragOverId(null);
   };
 
   return (
@@ -86,8 +100,42 @@ export function CategoryPanel({
           {categories.map((category) => (
             <li
               key={category.id}
-              className={`category-row ${activeTool === category.id ? "active" : ""}`}
+              className={[
+                "category-row",
+                activeTool === category.id && "active",
+                draggingId === category.id && "dragging",
+                dragOverId === category.id && draggingId !== category.id && "drag-over",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              onDragOver={(e) => {
+                if (!draggingId) return;
+                e.preventDefault();
+                if (draggingId !== category.id) setDragOverId(category.id);
+              }}
+              onDragLeave={() => setDragOverId((current) => (current === category.id ? null : current))}
+              onDrop={(e) => {
+                e.preventDefault();
+                handleDrop(category.id);
+              }}
             >
+              <span
+                className="drag-handle"
+                draggable
+                aria-hidden="true"
+                title="Drag to reorder"
+                onDragStart={(e) => {
+                  setDraggingId(category.id);
+                  e.dataTransfer.effectAllowed = "move";
+                  e.dataTransfer.setData("text/plain", category.id);
+                }}
+                onDragEnd={() => {
+                  setDraggingId(null);
+                  setDragOverId(null);
+                }}
+              >
+                ⠿
+              </span>
               <button
                 type="button"
                 className="category-select"
