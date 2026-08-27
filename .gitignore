@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.log
+.env
+
+# Collected survey submissions stay local, not committed
+data/*.jsonl
+
+.DS_Store
+Thumbs.db

@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(node --version)",
+      "PowerShell(npm --version)",
+      "PowerShell(npm view react-simple-maps version 2>$null)",
+      "PowerShell(npm create vite@latest client -- --template react-ts)",
+      "PowerShell(npm install react-simple-maps@3.0.0 d3-geo topojson-client us-atlas 2>&1)",
+      "PowerShell(npm install d3-geo topojson-client us-atlas 2>&1)",
+      "PowerShell(npm install -D @types/d3-geo @types/topojson-client 2>&1)",
+      "Bash(python3 -c ' *)",
+      "Bash(node -e ' *)",
+      "PowerShell(npm run build 2>&1)",
+      "PowerShell(Invoke-RestMethod -Uri \"http://localhost:3001/api/submissions/count\" -Method Get)",
+      "Bash(command -v chromium-cli)",
+      "Bash(echo \"exit:$?\")",
+      "Bash(ls \"/c/Users/josep/AppData/Local/ms-playwright/\")",
+      "Read(//c/Users/josep/AppData/Local/ms-playwright//**)",
+      "Read(//c/Users/josep/AppData/Local/Temp/claude/c--Users-josep-source-clickable-map/2fd6bfe2-9366-4895-8796-ccb6726e5eab/scratchpad/verify/**)",
+      "Bash(node verify.mjs)",
+      "Bash(npm view *)",
+      "PowerShell(Get-NetTCPConnection -LocalPort 3001,5173 -State Listen -ErrorAction SilentlyContinue)",
+      "PowerShell(npm run dev)",
+      "PowerShell(npm run lint 2>&1)",
+      "Bash(node verify2.mjs)",
+      "Bash(node debug.mjs)"
+    ]
+  }
+}
