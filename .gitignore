@@ -8,3 +8,7 @@ data/*.jsonl
 
 .DS_Store
 Thumbs.db
+
+#Claude AI
+.claude/
+settings.local.json
